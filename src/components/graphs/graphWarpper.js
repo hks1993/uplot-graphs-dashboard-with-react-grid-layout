@@ -5,6 +5,7 @@ import { defautOptions } from "./zoomFunction";
 import "uplot/dist/uPlot.min.css";
 import styled from "styled-components";
 import { getDebouncedSetgraph, getSize } from "../../utils/graphsFunctions";
+import { resizeObserverInstance } from "../../utils/resizeObserver";
 
 const GraphContainer = styled.div`
   display: flex;
@@ -37,30 +38,15 @@ export const MyPlotFunction = (props) => {
           data,
           graphRef.current
         );
-
-        var resizeObserver = new ResizeObserver((event) => {
-          const filteredEvents = event.filter((element) => {
-            return element.target.id === props.id;
-          });
-          filteredEvents.forEach((event) => {
-            const rect = {
-              clientWidth: event.borderBoxSize[0].inlineSize,
-              clientHeight: event.borderBoxSize[0].blockSize,
-            };
-
-            window.requestAnimationFrame(() => {
-              getDebouncedSetgraph()({ graph: graphInstance.current }, rect);
-            });
-          });
-        });
-        resizeObserver.observe(graphRef.current, { box: "border-box" });
+        graphRef.current.graph = graphInstance.current;
+        resizeObserverInstance.observe(graphRef.current, { box: "border-box" });
 
         return () => {
           if (graphInstance.current) {
             graphInstance.current.destroy();
             graphInstance.current = null;
           }
-          resizeObserver.disconnect();
+          resizeObserverInstance.disconnect();
         };
       }
       if (graphInstance.current !== null) {

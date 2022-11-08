@@ -5,9 +5,11 @@ import "react-resizable/css/styles.css";
 import { GraphRendered } from "./graphs/graphComponent";
 import { saveToLS, getFromLS } from "../utils/localStorege";
 import { StyledButton } from "./styled/containerStyled";
+import { graphs } from "../configurations/graphsMetadata";
+
 const ReactGridLayout = WidthProvider(Responsive);
 const originalLayouts = getFromLS("layouts") || [];
-
+const { first, second } = graphs;
 const defaultProps = {
   className: "layout",
   cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
@@ -38,10 +40,18 @@ export const CustomGridLayout = (props) => {
         onLayoutChange={(layout, layouts) => onLayoutChange(layout, layouts)}
       >
         <div key="1" data-grid={{ w: 5, h: 8, x: 0, y: 0, minW: 2, minH: 3 }}>
-          <GraphRendered id="graph 1" graphName={"first"} />
+          <GraphRendered
+            id="graph 1"
+            graphName={"first"}
+            options={{ ...first }}
+          />
         </div>
         <div key="2" data-grid={{ w: 5, h: 8, x: 6, y: 0, minW: 2, minH: 3 }}>
-          <GraphRendered id="graph 2" graphName={"second"} />
+          <GraphRendered
+            id="graph 2"
+            graphName={"second"}
+            options={{ ...second }}
+          />
         </div>
       </ReactGridLayout>
     </>

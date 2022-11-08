@@ -8,6 +8,10 @@ import { ChartsContext } from "./reducers/chartsContext";
 import { useReducer, useContext } from "react";
 const theme = {
   maxWidth: "2048px",
+  primary: "blue",
+  secondary: "red",
+  neutral: "gray",
+  secondary: "red",
   background: {
     header: "#ebfbff",
     body: "#fff",
@@ -20,6 +24,8 @@ const theme = {
 export default function App() {
   const [state, dispatch] = useReducer(ChartReducer, {
     data: [],
+    firstChartData: [],
+    secondChartData: [],
   });
   return (
     <ChartsContext.Provider value={{ state, dispatch }}>

@@ -4,7 +4,16 @@ import { MyPlotFunction } from "./graphWarpper";
 
 export const GraphRendered = (props) => {
   const {
-    state: { data },
+    state: { firstChartData, secondChartData },
   } = useContext(ChartsContext);
-  return <MyPlotFunction {...props} data={data} />;
+  const getRelevantGraphData = () => {
+    if (props.graphName === "first") {
+      return firstChartData;
+    }
+    if (props.graphName === "second") {
+      return secondChartData;
+    }
+    return [];
+  };
+  return <MyPlotFunction {...props} data={getRelevantGraphData()} />;
 };

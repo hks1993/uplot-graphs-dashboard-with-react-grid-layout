@@ -3,24 +3,40 @@ import { useEffect, useContext, useRef, useState } from "react";
 import { ChartsContext } from "../reducers/chartsContext";
 import { CustomGridLayout } from "./responsiveGrid";
 import { getPoints } from "../utils/getData";
-let count = 0;
+import { Container, StyledButton } from "./styled/containerStyled";
+
 const startDataUpdate = function (dispatch, intervalRef) {
-  const dispatchData = () => {
+  const dispatchData = (graph) => {
     // console.count("startDataUpdateInterval");
-    const newData = getPoints(this.startIndex, range);
-    this.startIndex = [...newData[0]].pop();
-    this.data[0] = [...this.data[0], ...newData[0]];
-    this.data[1] = [...this.data[1], ...newData[1]];
-    this.data[2] = [...this.data[2], ...newData[2]];
-    dispatch({
-      type: "SET_DATA",
-      payload: [...this.data],
-    });
+    const newData = getPoints(this[graph].startIndex, range);
+    this[graph].startIndex = [...newData[0]].pop();
+    this[graph].data[0] = [...this[graph].data[0], ...newData[0]];
+    this[graph].data[1] = [...this[graph].data[1], ...newData[1]];
+    this[graph].data[2] = [...this[graph].data[2], ...newData[2]];
+    if (graph === "first") {
+      dispatch({
+        type: "SET_DATA_FIRST",
+        payload: [...this[graph].data],
+      });
+    }
+    if (graph === "second") {
+      dispatch({
+        type: "SET_DATA_SECOND",
+        payload: [...this[graph].data],
+      });
+    }
   };
   const range = 5;
-  dispatchData();
-  intervalRef.current = setInterval(dispatchData, 1000);
-}.bind({ data: [[], [], []], startIndex: 0 });
+  dispatchData("first");
+  dispatchData("second");
+  intervalRef.current = setInterval(() => {
+    dispatchData("first");
+    dispatchData("second");
+  }, 1000);
+}.bind({
+  first: { data: [[], [], []], startIndex: 0 },
+  second: { data: [[], [], []], startIndex: 50 },
+});
 export const MainContent = (props) => {
   const { dispatch } = useContext(ChartsContext);
   const [dataUpdate, setDataUpdate] = useState(false);
@@ -45,37 +61,16 @@ export const MainContent = (props) => {
     return;
   }, [dataUpdate]);
   return (
-    <>
-      <CustomGridLayout />
-      <button
+    <Container>
+      <StyledButton
         onClick={() => {
           setDataUpdate(!dataUpdate);
         }}
+        color={!dataUpdate ? "primary" : "secondary"}
       >
         {dataUpdate ? "Pause" : "Start"}
-      </button>
-    </>
+      </StyledButton>
+      <CustomGridLayout />
+    </Container>
   );
 };
-
-// const data = [
-//   [1, 2, 3, 4, 5, 6, 7],
-//   [40, 43, 60, 65, 71, 73, 80],
-//   [18, 24, 37, 55, 55, 60, 63],
-// ];
-// const data2 = [
-//   [...data[0], ...[7, 8, 9, 10, 11, 12, 13]],
-//   [...data[1], ...data[2]],
-//   [...data[2], ...data[1]],
-//   ,
-// ];
-// dispatch({
-//   type: "SET_DATA",
-//   payload: data,
-// });
-// setTimeout(() => {
-//   dispatch({
-//     type: "SET_DATA",
-//     payload: data2,
-//   });
-// }, 3000);

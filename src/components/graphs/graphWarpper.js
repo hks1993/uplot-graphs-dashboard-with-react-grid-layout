@@ -16,25 +16,19 @@ const GraphContainer = styled.div`
     overflow: hidden;
   }
 `;
+const data = [
+  [1, 2, 3, 4, 5, 6, 7],
+  [40, 43, 60, 65, 71, 73, 80],
+  [18, 24, 37, 55, 55, 60, 63],
+];
 
 export const MyPlotFunction = (props) => {
   const graphRef = useRef(null);
   const graphInstance = useRef(null);
-  const {
-    state: { data },
-  } = useContext(ChartsContext);
+  const { data } = props;
 
-  // useEffect(() => {
-  //   if (graph) {
-  //     window.requestAnimationFrame(() => {
-  //       //getDebouncedSetgraph()({ graph }, rect);
-  //       console.log("called", props.id);
-  //       getgetDebouncedSetgraph()()({ graph }, graphRef.current);
-  //     });
-  //   }
-  // }, [props.reRenderGraph]);
   useEffect(() => {
-    if (graphRef.current !== null) {
+    if (graphRef.current !== null && data.length) {
       if (graphInstance.current === null) {
         const gridDimention = getSize(graphRef.current);
 
@@ -69,16 +63,11 @@ export const MyPlotFunction = (props) => {
           resizeObserver.disconnect();
         };
       }
-    }
-  }, []);
-  useEffect(() => {
-    console.count("set Data" + props.id);
-    if (graphInstance.current !== null) {
-      window.requestAnimationFrame(() => graphInstance.current.setData(data));
+      if (graphInstance.current !== null) {
+        window.requestAnimationFrame(() => graphInstance.current.setData(data));
+      }
     }
   }, [data]);
-
-  useEffect(() => {}, [data]);
 
   return (
     <GraphContainer

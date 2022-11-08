@@ -1,11 +1,12 @@
 // import styled from "styled-components";
-import { useEffect, useContext, useRef, useState, useMemo } from "react";
-import { ChartsContext } from "../reducers/chartsContext";
+import { useEffect, useState, useMemo } from "react";
+
 import { CustomGridLayout } from "./responsiveGrid";
 import { startDataUpdate } from "../utils/getData";
 import { Container, StyledButton } from "./styled/containerStyled";
+import { useDispatch } from "react-redux";
 export const MainContent = (props) => {
-  const { dispatch } = useContext(ChartsContext);
+  const dispatch = useDispatch();
   const [dataUpdate, setDataUpdate] = useState(false);
   const intervalRef = useMemo(
     () => ({

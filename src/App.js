@@ -6,6 +6,8 @@ import { MainContent } from "./components/mainContent";
 import { ChartReducer } from "./reducers/chartsReducer";
 import { ChartsContext } from "./reducers/chartsContext";
 import { useReducer, useContext } from "react";
+import { Provider } from "react-redux";
+import { store } from "./reducers/store";
 const theme = {
   maxWidth: "2048px",
   primary: "blue",
@@ -22,19 +24,14 @@ const theme = {
 };
 
 export default function App() {
-  const [state, dispatch] = useReducer(ChartReducer, {
-    data: [],
-    firstChartData: [],
-    secondChartData: [],
-  });
   return (
-    <ChartsContext.Provider value={{ state, dispatch }}>
+    <Provider store={store}>
       <ThemeProvider theme={theme}>
         <GlobalStyles />
 
         <Header />
         <MainContent />
       </ThemeProvider>
-    </ChartsContext.Provider>
+    </Provider>
   );
 }

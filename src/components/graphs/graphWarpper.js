@@ -1,10 +1,10 @@
-import React, { useEffect, useRef, useContext } from "react";
-import { ChartsContext } from "../../reducers/chartsContext";
+import React, { useEffect, useRef } from "react";
+
 import { getUplot } from "./uplot";
 import { defautOptions } from "./zoomFunction";
 import "uplot/dist/uPlot.min.css";
 import styled from "styled-components";
-import { getDebouncedSetgraph, getSize } from "../../utils/graphsFunctions";
+import { getSize } from "../../utils/graphsFunctions";
 import { resizeObserverInstance } from "../../utils/resizeObserver";
 
 const GraphContainer = styled.div`

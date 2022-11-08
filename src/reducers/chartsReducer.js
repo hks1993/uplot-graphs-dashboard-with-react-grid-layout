@@ -1,4 +1,11 @@
-export const ChartReducer = (state, action) => {
+export const ChartReducer = (
+  state = {
+    data: [],
+    firstChartData: [],
+    secondChartData: [],
+  },
+  action
+) => {
   switch (action.type) {
     case "SET_DATA":
       return {
@@ -19,6 +26,6 @@ export const ChartReducer = (state, action) => {
       };
     }
     default:
-      throw new Error("Invalid Action");
+      return state;
   }
 };

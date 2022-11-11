@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { Container } from "./styled/containerStyled";
-
+import Logout from "./authentication/logout";
 const StyledHeadding = styled.h2`
   color: black;
   font-weight: 400;
@@ -13,12 +13,14 @@ const StyledHeader = styled.div`
   display: flex;
   align-items: center;
 `;
+
 export const Header = (props) => {
   return (
     <StyledHeader>
       <Container>
         <StyledHeadding>Charts Playground</StyledHeadding>
       </Container>
+      <Logout />
     </StyledHeader>
   );
 };

@@ -1,11 +1,17 @@
 import "./styles.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 import { GlobalStyles } from "./components/styled/globalStyled";
 import { ThemeProvider } from "styled-components";
 import { Header } from "./components/header";
 import { MainContent } from "./components/mainContent";
 import { ChartReducer } from "./reducers/chartsReducer";
 import { ChartsContext } from "./reducers/chartsContext";
+import { AuthProvider } from "./contexts/authContext";
+import { Signup } from "./components/authentication/signup";
+import { Login } from "./components/authentication/login";
+import PrivateRoute from "./components/authentication/privateRoute";
 import { useReducer, useContext } from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 const theme = {
   maxWidth: "2048px",
   primary: "blue",
@@ -31,9 +37,24 @@ export default function App() {
     <ChartsContext.Provider value={{ state, dispatch }}>
       <ThemeProvider theme={theme}>
         <GlobalStyles />
-
-        <Header />
-        <MainContent />
+        <Router>
+          <AuthProvider>
+            <Header />
+            <Routes>
+              <Route
+                exact
+                path="/"
+                element={
+                  <PrivateRoute>
+                    <MainContent />
+                  </PrivateRoute>
+                }
+              />
+              <Route path={"/signup"} element={<Signup />} />
+              <Route path={"/login"} element={<Login />} />
+            </Routes>
+          </AuthProvider>
+        </Router>
       </ThemeProvider>
     </ChartsContext.Provider>
   );
